@@ -301,12 +301,19 @@ For issues or questions:
 
 1. scapper.py: Extract text and creates chunks with metadata
 
-2. embedder.py: Embeds chunks and creates ChromaDB (vector DB) eabling similarity search
+2. embedder.py: 
+Initially
+ - Embeds chunks
+- creates ChromaDB (vector DB) 
+
+While receiving user query
+- enables similarity search
+- retrieves top K results
 
 3. query_interface.py:
 
 ```
-embeds user query -> similairty search in DB -> retreieve results from DB -> format context exctracted -> sends prmpt with results to LLM -> generates answer 
+embeds user query -> similairty search in DB -> retreieve results from DB using *embedder.py::query function* -> format context exctracted -> sends prmpt with results to LLM -> generates answer 
 ```
 
 4. app.py: user interface with streamlit with chat history and coordinates rest of the files

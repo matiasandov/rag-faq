@@ -62,10 +62,10 @@ class RAGEmbedder:
             )
         )
         
-        # Set up embedding function
+        # Initializa embedding model - default is from transformers -> used in ChromaDB initialization
         self.embedding_function = self._get_embedding_function()
         
-        # Get or create collection
+        # Get or create collection (uses embedded model to initilize it)
         self.collection = self._get_or_create_collection()
     
     def _get_embedding_function(self):
@@ -87,13 +87,14 @@ class RAGEmbedder:
         """Get existing collection or create a new one"""
         try:
             # Try to get existing collection
-            collection = self.client.get_collection(
+            collection = self.client.get_collection( 
                 name=self.collection_name,
+                #uses embedding model
                 embedding_function=self.embedding_function
             )
             print(f"Loaded existing collection '{self.collection_name}' with {collection.count()} documents")
         except:
-            # Create new collection
+            # Create new collection if there is not an existing one
             collection = self.client.create_collection(
                 name=self.collection_name,
                 embedding_function=self.embedding_function,
@@ -114,6 +115,7 @@ class RAGEmbedder:
         total_chunks = len(chunks)
         print(f"Adding {total_chunks} chunks to ChromaDB...")
         
+        #anades chunk per batch
         for i in range(0, total_chunks, batch_size):
             batch = chunks[i:i + batch_size]
             
@@ -134,7 +136,7 @@ class RAGEmbedder:
                 metadata = self._flatten_metadata(chunk.get('metadata', {}))
                 metadatas.append(metadata)
             
-            # Add to collection (embeddings generated automatically)
+            # 👀👀👀👀Add to collection (embeddings generated automatically)👀👀👀
             self.collection.add(
                 ids=ids,
                 documents=documents,
@@ -232,7 +234,7 @@ class RAGEmbedder:
         self.collection.delete(ids=chunk_ids)
         print(f"Deleted {len(chunk_ids)} chunks")
 
-
+#👁️👁️👁️wraps previous class and uses scraper methods👁️👁️👁️
 class MultiDocumentRAG:
     """
     Process multiple PDFs and store them in ChromaDB
