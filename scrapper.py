@@ -255,8 +255,6 @@ class PDFScraper:
         
         return json_output
     
-    
-
 
 # # Example usage
 # if __name__ == "__main__":
