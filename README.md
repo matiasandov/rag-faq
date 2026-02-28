@@ -295,3 +295,18 @@ For issues or questions:
 - **Ollama Guide**: https://github.com/ollama/ollama
 - **ChromaDB Tutorial**: https://docs.trychroma.com/getting-started
 - **Streamlit Docs**: https://docs.streamlit.io
+
+
+## Workflow
+
+1. scapper.py: Extract text and creates chunks with metadata
+
+2. embedder.py: Embeds chunks and creates ChromaDB (vector DB) eabling similarity search
+
+3. query_interface.py:
+
+```
+embeds user query -> similairty search in DB -> retreieve results from DB -> format context exctracted -> sends prmpt with results to LLM -> generates answer 
+```
+
+4. app.py: user interface with streamlit with chat history and coordinates rest of the files
