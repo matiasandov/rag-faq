@@ -97,7 +97,7 @@ class RAGEmbedder:
             collection = self.client.create_collection(
                 name=self.collection_name,
                 embedding_function=self.embedding_function,
-                metadata={"description": "Ford RAG document collection"}
+                metadata={"description": "Car RAG document collection"}
             )
             print(f"Created new collection '{self.collection_name}'")
         

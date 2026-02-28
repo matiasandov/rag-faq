@@ -17,7 +17,7 @@ class DocumentSection:
 class PDFScraper:
     """
     General-purpose PDF scraper for extracting structured content
-    Designed for Ford organizational documents and similar PDFs
+    Designed for Car organizational documents and similar PDFs
     """
     
     def __init__(self, pdf_path: str):
