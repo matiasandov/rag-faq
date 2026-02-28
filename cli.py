@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Simple CLI for Car RAG Assistant
+Simple CLI for Company RAG Assistant
 Usage: python cli.py [command] [options]
 """
 
@@ -162,7 +162,7 @@ def stats(args):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Car RAG Assistant CLI",
+        description="Company RAG Assistant CLI",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:

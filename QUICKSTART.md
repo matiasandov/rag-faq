@@ -1,4 +1,4 @@
-# Quick Start Guide - Car RAG Assistant
+# Quick Start Guide - Company RAG Assistant
 
 ## 🚀 Setup (5 minutes)
 

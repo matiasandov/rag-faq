@@ -1,6 +1,6 @@
-# Car RAG Assistant 🚗
+# Company RAG Assistant 🚗
 
-A Retrieval-Augmented Generation (RAG) application for answering questions about Car documents using local LLMs via Ollama.
+A Retrieval-Augmented Generation (RAG) application for answering questions about Company documents using local LLMs via Ollama.
 
 ## 🎯 Features
 
@@ -272,7 +272,7 @@ ollama pull llama3.2
 
 ## 📝 License
 
-This project is for internal Car use. Please review company policies before sharing externally.
+This project is for internal Company use. Please review company policies before sharing externally.
 
 ## 🤝 Contributing
 
@@ -317,3 +317,12 @@ embeds user query -> similairty search in DB -> retreieve results from DB using 
 ```
 
 4. app.py: user interface with streamlit with chat history and coordinates rest of the files
+
+## Technical Concepts
+
+### Retriever used : Dense (Chroma's default one)
+- K-Nearest Neighbors (KNN) Search
+Instead of searching for exact keyword matches (like "AOC" or "DELL"), When you trigger the query() function, ChromaDB takes the vector (since we used an embedded model) of your question and plots it in a high-dimensional mathematical space. It then calculates the "distance" between your question's vector and all the document chunk vectors stored in the database.
+
+### The Embedding Model: all-MiniLM-L6-v2
+Its only job is to take text (either your PDF chunks or your user's search query) and translate it into a 384-dimensional mathematical array (a dense vector).

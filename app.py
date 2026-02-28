@@ -4,12 +4,12 @@ from pathlib import Path
 import json
 from datetime import datetime
 
-from embedder import MultiDocumentRAG
+from initialize_rag_system import MultiDocumentRAG
 from query_interface import OllamaQueryInterface
 
 # Page configuration
 st.set_page_config(
-    page_title="Car RAG Assistant",
+    page_title="Company RAG Assistant",
     page_icon="🚗",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -126,7 +126,7 @@ def process_pdf(pdf_file, chunk_size, overlap):
 # Main app
 def main():
     # Header
-    st.markdown('<p class="main-header">🚗 Car RAG Assistant</p>', unsafe_allow_html=True)
+    st.markdown('<p class="main-header">🚗 Company RAG Assistant</p>', unsafe_allow_html=True)
     
     # Sidebar
     with st.sidebar:
@@ -312,11 +312,11 @@ def main():
     
     # Tab 4: About
     with tab4:
-        st.header("About Car RAG Assistant")
+        st.header("About Company RAG Assistant")
         
         st.markdown("""
         ### 🎯 Purpose
-        This application uses Retrieval-Augmented Generation (RAG) to answer questions about Car documents.
+        This application uses Retrieval-Augmented Generation (RAG) to answer questions about Company documents.
         
         ### 🔧 How it Works
         1. **Document Processing**: PDFs are chunked and embedded into vectors

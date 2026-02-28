@@ -2,12 +2,11 @@ import chromadb
 from chromadb.config import Settings
 from chromadb.utils import embedding_functions
 from typing import List, Dict, Optional
-import json
 from pathlib import Path
-from scrapper import PDFScraper
 import os
 from datetime import datetime
 
+#👀👀👀 Data layer class👀👀👀
 class RAGEmbedder:
     """
     Handles embedding generation and ChromaDB storage for RAG applications
@@ -98,7 +97,7 @@ class RAGEmbedder:
             collection = self.client.create_collection(
                 name=self.collection_name,
                 embedding_function=self.embedding_function,
-                metadata={"description": "Car RAG document collection"}
+                metadata={"description": "Company RAG document collection"}
             )
             print(f"Created new collection '{self.collection_name}'")
         
@@ -234,153 +233,3 @@ class RAGEmbedder:
         self.collection.delete(ids=chunk_ids)
         print(f"Deleted {len(chunk_ids)} chunks")
 
-#👁️👁️👁️wraps previous class and uses scraper methods👁️👁️👁️
-class MultiDocumentRAG:
-    """
-    Process multiple PDFs and store them in ChromaDB
-    """
-    
-    def __init__(
-        self,
-        collection_name: str = "company_documents",
-        persist_directory: str = "./chroma_db",
-        embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
-    ):
-        self.embedder = RAGEmbedder(
-            collection_name=collection_name,
-            persist_directory=persist_directory,
-            embedding_model=embedding_model
-        )
-    
-    def process_pdf(
-        self, 
-        pdf_path: str, 
-        chunk_size: int = 500, 
-        overlap: int = 50
-    ):
-        """
-        Process a single PDF and add to ChromaDB
-        
-        Args:
-            pdf_path: Path to the PDF file
-            chunk_size: Size of text chunks
-            overlap: Overlap between chunks
-        """
-        print(f"\n{'='*60}")
-        print(f"Processing: {pdf_path}")
-        print(f"{'='*60}")
-        
-        # Extract and process PDF
-        scraper = PDFScraper(pdf_path)
-        scraper.extract_text()           # Extract from PDF
-        scraper.identify_sections()      # Parse structure
-        chunks = scraper.chunk_for_rag(chunk_size, overlap)  # Generate once with custom params
-        
-       # Get additional data for statistics (call these after sections are identified)
-        acronyms = scraper.extract_acronyms()
-        processes = scraper.extract_processes()
-        
-        # Add to ChromaDB
-        self.embedder.add_chunks(chunks)
-        
-        return {
-            'pdf_path': pdf_path,
-            'sections': len(scraper.sections),      # Access from scraper object
-            'acronyms': len(acronyms),              # From our extraction
-            'processes': len(processes),            # From our extraction
-            'chunks': len(chunks)
-        }
-    
-    def process_directory(
-        self, 
-        directory_path: str,
-        chunk_size: int = 500,
-        overlap: int = 50,
-        file_pattern: str = "*.pdf"
-    ):
-        """
-        Process all PDFs in a directory
-        
-        Args:
-            directory_path: Path to directory containing PDFs
-            chunk_size: Size of text chunks
-            overlap: Overlap between chunks
-            file_pattern: Glob pattern for PDF files
-        """
-        pdf_files = list(Path(directory_path).glob(file_pattern))
-        
-        if not pdf_files:
-            print(f"No PDF files found in {directory_path}")
-            return
-        
-        print(f"Found {len(pdf_files)} PDF files to process")
-        
-        results = []
-        for pdf_file in pdf_files:
-            try:
-                result = self.process_pdf(
-                    str(pdf_file),
-                    chunk_size=chunk_size,
-                    overlap=overlap
-                )
-                results.append(result)
-            except Exception as e:
-                print(f"Error processing {pdf_file}: {e}")
-        
-        return results
-    
-    def query(self, query_text: str, n_results: int = 5) -> Dict:
-        """Query the RAG system"""
-        return self.embedder.query(query_text, n_results)
-    
-    def get_stats(self) -> Dict:
-        """Get statistics about the RAG system"""
-        return self.embedder.get_collection_stats()
-
-
-# Example usage
-if __name__ == "__main__":
-    # Option 1: Process single PDF
-    rag = MultiDocumentRAG(
-        collection_name="company_accessories",
-        persist_directory="./chroma_db",
-        embedding_model="sentence-transformers/all-MiniLM-L6-v2"
-    )
-    
-    # Process the PDF
-    result = rag.process_pdf(
-        "accesorios.pdf",
-        chunk_size=500,
-        overlap=50
-    )
-    
-    print(f"\n{'='*60}")
-    print("Processing Summary:")
-    print(f"{'='*60}")
-    print(json.dumps(result, indent=2))
-    
-    # Get collection statistics
-    stats = rag.get_stats()
-    print(f"\n{'='*60}")
-    print("Collection Statistics:")
-    print(f"{'='*60}")
-    print(json.dumps(stats, indent=2))
-    
-    # Example query
-    print(f"\n{'='*60}")
-    print("Example Query:")
-    print(f"{'='*60}")
-    query_results = rag.query(
-        "¿Cuántos puntos se otorgan en el programa AOC DELL?",
-        n_results=3
-    )
-    
-    print(f"\nQuery: '¿Cuántos puntos se otorgan en el programa AOC DELL?'")
-    print(f"Found {len(query_results['documents'][0])} results:\n")
-    
-    for i, (doc, distance) in enumerate(zip(
-        query_results['documents'][0], 
-        query_results['distances'][0]
-    )):
-        print(f"Result {i+1} (distance: {distance:.4f}):")
-        print(f"{doc[:200]}...\n")

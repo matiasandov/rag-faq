@@ -143,7 +143,7 @@ INSTRUCCIONES:
 
 RESPUESTA:"""
         else:
-            prompt = f"""You are an expert assistant for Car documents. Your task is to answer questions based solely on the provided context.
+            prompt = f"""You are an expert assistant for Company documents. Your task is to answer questions based solely on the provided context.
 
 CONTEXT:
 {context}
@@ -329,20 +329,20 @@ ANSWER:"""
 
 # Example usage
 if __name__ == "__main__":
-    from embedder import MultiDocumentRAG
+    from embedder import RAGEmbedder
     
-    # Initialize RAG system
-    print("Loading RAG system...")
-    rag = MultiDocumentRAG(
+    # 1. Initialize the Data Layer (Database)
+    print("Loading database connection...")
+    db_embedder = RAGEmbedder(
         collection_name="ford_accessories",
         persist_directory="./chroma_db"
     )
     
-    # Initialize query interface
+    # 2. Initialize the Generation Layer (Query Interface)
     print("Initializing query interface...")
     query_interface = OllamaQueryInterface(
-        embedder=rag.embedder,
-        ollama_model="llama3.2",  # or "mistral", "phi3", etc.
+        embedder=db_embedder,
+        ollama_model="llama3.2",  
         temperature=0.7
     )
     
@@ -361,11 +361,7 @@ if __name__ == "__main__":
         print(f"\n📝 Question: {query}")
         print("-" * 60)
         
-        result = query_interface.query(
-            question=query,
-            n_results=3,
-            language="es"
-        )
+        result = query_interface.query(question=query, n_results=3, language="es")
         
         if result["success"]:
             print(f"💡 Answer: {result['answer']}\n")
@@ -374,5 +370,3 @@ if __name__ == "__main__":
                 print(f"  {i}. {source['section']} (relevance: {source['relevance']:.2f})")
         else:
             print(f"❌ Error: {result.get('error', 'Unknown error')}")
-        
-        print("="*60)
