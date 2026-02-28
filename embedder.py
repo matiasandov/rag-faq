@@ -4,7 +4,7 @@ from chromadb.utils import embedding_functions
 from typing import List, Dict, Optional
 import json
 from pathlib import Path
-from scraper import PDFScraper
+from scrapper import PDFScraper
 import os
 from datetime import datetime
 
@@ -270,19 +270,22 @@ class MultiDocumentRAG:
         
         # Extract and process PDF
         scraper = PDFScraper(pdf_path)
-        data = scraper.process()
+        scraper.extract_text()           # Extract from PDF
+        scraper.identify_sections()      # Parse structure
+        chunks = scraper.chunk_for_rag(chunk_size, overlap)  # Generate once with custom params
         
-        # Get chunks
-        chunks = scraper.chunk_for_rag(chunk_size=chunk_size, overlap=overlap)
+       # Get additional data for statistics (call these after sections are identified)
+        acronyms = scraper.extract_acronyms()
+        processes = scraper.extract_processes()
         
         # Add to ChromaDB
         self.embedder.add_chunks(chunks)
         
         return {
             'pdf_path': pdf_path,
-            'sections': len(data['sections']),
-            'acronyms': len(data['acronyms']),
-            'processes': len(data['processes']),
+            'sections': len(scraper.sections),      # Access from scraper object
+            'acronyms': len(acronyms),              # From our extraction
+            'processes': len(processes),            # From our extraction
             'chunks': len(chunks)
         }
     

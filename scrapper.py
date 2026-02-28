@@ -202,6 +202,7 @@ class PDFScraper:
         """
         chunks = []
         
+        #for each section we extract text
         for section in self.sections:
             text = f"{section.title}\n{section.content}"
             
@@ -254,37 +255,26 @@ class PDFScraper:
         
         return json_output
     
-    def process(self) -> Dict:
-        """Main processing pipeline"""
-        self.extract_text()
-        self.identify_sections()
-        
-        return {
-            'metadata': self.metadata,
-            'acronyms': self.extract_acronyms(),
-            'sections': self.sections,
-            'processes': self.extract_processes(),
-            'chunks': self.chunk_for_rag()
-        }
+    
 
 
-# Example usage
-if __name__ == "__main__":
-    # Process single PDF
-    scraper = PDFScraper("accesorios.pdf")
-    data = scraper.process()
+# # Example usage
+# if __name__ == "__main__":
+#     # Process single PDF
+#     scraper = PDFScraper("accesorios.pdf")
+#     data = scraper.process()
     
-    # Export to JSON
-    scraper.to_json("accesorios_extracted.json")
+#     # Export to JSON
+#     scraper.to_json("accesorios_extracted.json")
     
-    # Print summary
-    print(f"Extracted {len(data['sections'])} sections")
-    print(f"Found {len(data['acronyms'])} acronyms")
-    print(f"Identified {len(data['processes'])} processes")
-    print(f"Created {len(data['chunks'])} chunks for RAG")
+#     # Print summary
+#     print(f"Extracted {len(data['sections'])} sections")
+#     print(f"Found {len(data['acronyms'])} acronyms")
+#     print(f"Identified {len(data['processes'])} processes")
+#     print(f"Created {len(data['chunks'])} chunks for RAG")
     
-    # Get chunks for RAG
-    chunks = scraper.chunk_for_rag(chunk_size=500, overlap=50)
-    for chunk in chunks[:3]:  # Show first 3 chunks
-        print(f"\nChunk ID: {chunk['id']}")
-        print(f"Text preview: {chunk['text'][:100]}...")
+#     # Get chunks for RAG
+#     chunks = scraper.chunk_for_rag(chunk_size=500, overlap=50)
+#     for chunk in chunks[:3]:  # Show first 3 chunks
+#         print(f"\nChunk ID: {chunk['id']}")
+#         print(f"Text preview: {chunk['text'][:100]}...")
