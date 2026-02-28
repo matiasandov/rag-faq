@@ -1,4 +1,4 @@
-from embedder import RAGEmbedder
+from vector_database_layer import RAGEmbedder
 from scrapper import PDFScraper
 import json
 from pathlib import Path

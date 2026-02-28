@@ -7,7 +7,7 @@ Usage: python cli.py [command] [options]
 import argparse
 import sys
 from pathlib import Path
-from embedder import MultiDocumentRAG
+from vector_database_layer import MultiDocumentRAG
 from query_interface import OllamaQueryInterface
 
 

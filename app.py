@@ -10,7 +10,7 @@ from query_interface import OllamaQueryInterface
 # Page configuration
 st.set_page_config(
     page_title="Company RAG Assistant",
-    page_icon="🚗",
+    page_icon="👀",
     layout="wide",
     initial_sidebar_state="expanded"
 )

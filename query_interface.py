@@ -1,7 +1,7 @@
 import requests
 import json
 from typing import List, Dict, Optional
-from embedder import RAGEmbedder
+from vector_database_layer import RAGEmbedder
 
 
 class OllamaQueryInterface:
@@ -329,7 +329,7 @@ ANSWER:"""
 
 # Example usage
 if __name__ == "__main__":
-    from embedder import RAGEmbedder
+    from vector_database_layer import RAGEmbedder
     
     # 1. Initialize the Data Layer (Database)
     print("Loading database connection...")
