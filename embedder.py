@@ -26,7 +26,7 @@ class RAGEmbedder:
     
     def __init__(
         self, 
-        collection_name: str = "ford_documents",
+        collection_name: str = "company_documents",
         persist_directory: str = "./chroma_db",
         embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
     ):
@@ -240,7 +240,7 @@ class MultiDocumentRAG:
     
     def __init__(
         self,
-        collection_name: str = "ford_documents",
+        collection_name: str = "company_documents",
         persist_directory: str = "./chroma_db",
         embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
     ):
@@ -340,7 +340,7 @@ class MultiDocumentRAG:
 if __name__ == "__main__":
     # Option 1: Process single PDF
     rag = MultiDocumentRAG(
-        collection_name="ford_accessories",
+        collection_name="company_accessories",
         persist_directory="./chroma_db",
         embedding_model="sentence-transformers/all-MiniLM-L6-v2"
     )
