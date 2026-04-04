@@ -7,7 +7,7 @@ Usage: python cli.py [command] [options]
 import argparse
 import sys
 from pathlib import Path
-from vector_database_layer import MultiDocumentRAG
+from initialize_rag_system import MultiDocumentRAG
 from query_interface import OllamaQueryInterface
 
 
@@ -187,7 +187,7 @@ Examples:
     
     # Common arguments
     common = argparse.ArgumentParser(add_help=False)
-    common.add_argument('--collection', default='ford_accessories', help='Collection name')
+    common.add_argument('--collection', default='x_accessories', help='Collection name')
     common.add_argument('--persist-dir', default='./chroma_db', help='Persist directory')
     common.add_argument('--embedding-model', default='sentence-transformers/all-MiniLM-L6-v2',
                        help='Embedding model')

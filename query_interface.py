@@ -127,7 +127,7 @@ class OllamaQueryInterface:
             Complete prompt string
         """
         if language == "es":
-            prompt = f"""Eres un asistente experto en documentos de Ford. Tu tarea es responder preguntas basándote únicamente en el contexto proporcionado.
+            prompt = f"""Eres un asistente experto en documentos de x. Tu tarea es responder preguntas basándote únicamente en el contexto proporcionado.
 
 CONTEXTO:
 {context}
@@ -334,7 +334,7 @@ if __name__ == "__main__":
     # 1. Initialize the Data Layer (Database)
     print("Loading database connection...")
     db_embedder = RAGEmbedder(
-        collection_name="ford_accessories",
+        collection_name="x_accessories",
         persist_directory="./chroma_db"
     )
     

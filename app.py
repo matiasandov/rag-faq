@@ -134,7 +134,7 @@ def main():
         
         # RAG Settings
         st.subheader("RAG System")
-        collection_name = st.text_input("Collection Name", "ford_accessories")
+        collection_name = st.text_input("Collection Name", "x_accessories")
         persist_dir = st.text_input("Persist Directory", "./chroma_db")
         embedding_model = st.selectbox(
             "Embedding Model",

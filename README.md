@@ -172,11 +172,11 @@ Explain the phases of the approval process
 You can also use the components directly from Python:
 
 ```python
-from embedder import MultiDocumentRAG
+from embedder import Company
 from query_interface import OllamaQueryInterface
 
 # Initialize RAG
-rag = MultiDocumentRAG(
+rag = Company(
     collection_name="my_docs",
     persist_directory="./chroma_db"
 )
